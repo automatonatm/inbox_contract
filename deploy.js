@@ -4,7 +4,6 @@ const  dotenv =  require('dotenv');
 
 const {interface, bytecode} = require('./compile');
 
-
 dotenv.config({path: './.env'});
 
 
@@ -24,13 +23,14 @@ const web3 = new Web3(provider);
 const deploy = async () => {
 
     const accounts = await web3.eth.getAccounts();
+
     console.log('Attempting to deploy from account: ', accounts[0]);
 
-    const result = await  new web3.eth.Contract(JSON.parse(interface))
-        .deploy({data: bytecode, arguments: ['Deploying my contract']})
-        .send({from: accounts[0], gas: 1000000})
+    const result = await new web3.eth.Contract(JSON.parse(interface))
+                 .deploy({data: '0x' + bytecode, arguments: ['Hello Deploy']})
+                 .send({from: accounts[0], gas: '1000000'})
 
-    console.log('Contract Deployed to', result.options.addresses);
+    console.log('Contract Deployed to', result.options);
 };
 
 
